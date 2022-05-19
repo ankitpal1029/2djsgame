@@ -1,0 +1,15 @@
+{
+  "name": "2djsgame",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ankitpal1029/2djsgame.git",
+  "author": "ankitpal1029 <ankitkumarpal27@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "snowpack": "^3.8.8"
+  },
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build"
+  }
+}
