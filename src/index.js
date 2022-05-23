@@ -13,19 +13,77 @@ playerImage.src = "../assets/playerDown.png";
 
 import { Sprite } from "./sprite";
 import { keys } from "./control";
+import { collisions } from "./data/collisions";
+import { offset } from "./constants";
+
+const collisionsMap = [];
+for (let i = 0; i < collisions.length; i += 70) {
+  collisionsMap.push(collisions.slice(i, i + 70));
+}
+
+class Boundary {
+  static width = 48;
+  static height = 48;
+  constructor({ _position, _c }) {
+    this.position = _position;
+    // this is cause we exported 12x12px tiles at 400%
+    this.width = 48;
+    this.height = 48;
+    this.c = _c;
+  }
+
+  draw() {
+    this.c.fillStyle = "red";
+    this.c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
+
+const boundaries = [];
+
+collisionsMap.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 1025) {
+      boundaries.push(
+        new Boundary({
+          _position: {
+            x: j * Boundary.width + offset.x,
+            y: i * Boundary.height + offset.y,
+          },
+          _c: c,
+        })
+      );
+    }
+  });
+});
+
+console.log(boundaries);
 
 const background = new Sprite({
   _position: {
-    x: -785,
-    y: -600,
+    x: offset.x,
+    y: offset.y,
   },
   _image: image,
   _c: c,
 });
 
+const testBoundary = new Boundary({
+  _position: {
+    x: 400,
+    y: 400,
+  },
+  _c: c,
+});
+
+const movables = [background, testBoundary];
+
 function animate() {
   window.requestAnimationFrame(animate);
   background.draw();
+  testBoundary.draw();
+  // boundaries.forEach((boundary) => {
+  //   boundary.draw();
+  // });
   c.drawImage(
     playerImage,
     0,
@@ -38,10 +96,23 @@ function animate() {
     playerImage.height
   );
 
-  if (keys.w.pressed && keys.lastkey === "w") background.position.y += 3;
-  if (keys.a.pressed && keys.lastkey === "a") background.position.x += 3;
-  if (keys.s.pressed && keys.lastkey === "s") background.position.y -= 3;
-  if (keys.d.pressed && keys.lastkey === "d") background.position.x -= 3;
+  if (keys.w.pressed && keys.lastkey === "w") {
+    // background.position.y += 3;
+    movables.forEach((movable) => (movable.position.y += 3));
+  }
+  if (keys.a.pressed && keys.lastkey === "a") {
+    // background.position.x += 3;
+    movables.forEach((movable) => (movable.position.x += 3));
+  }
+  if (keys.s.pressed && keys.lastkey === "s") {
+    // background.position.x += 3;
+    movables.forEach((movable) => (movable.position.y -= 3));
+  }
+
+  if (keys.d.pressed && keys.lastkey === "d") {
+    // background.position.x -= 3;
+    movables.forEach((movable) => (movable.position.x -= 3));
+  }
 }
 animate();
 
