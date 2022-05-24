@@ -74,22 +74,47 @@ const testBoundary = new Boundary({
   _c: c,
 });
 
-const movables = [background, testBoundary];
+const movables = [background, ...boundaries];
 
-function animate() {
+const animate = () => {
   window.requestAnimationFrame(animate);
   background.draw();
-  testBoundary.draw();
+  // testBoundary.draw();
+  boundaries.forEach((boundary) => {
+    boundary.draw();
+    // if (rectangularCollisions({ rectangle1: player, rectangle2: boundary })) {
+    //   console.log("colliding");
+    // }
+  });
   player.draw();
 
   // collision conditions
-  if (rectangularCollisions({ rectangle1: player, rectangle2: testBoundary })) {
-    console.log("colliding");
-  }
 
+  let moving = true;
   if (keys.w.pressed && keys.lastkey === "w") {
     // background.position.y += 3;
-    movables.forEach((movable) => (movable.position.y += 3));
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i];
+      if (
+        rectangularCollisions({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x,
+              y: boundary.position.y + 3,
+            },
+          },
+        })
+      ) {
+        console.log("colliding");
+        moving = false;
+        break;
+      }
+    }
+    if (moving) {
+      movables.forEach((movable) => (movable.position.y += 3));
+    }
   }
   if (keys.a.pressed && keys.lastkey === "a") {
     // background.position.x += 3;
@@ -104,6 +129,6 @@ function animate() {
     // background.position.x -= 3;
     movables.forEach((movable) => (movable.position.x -= 3));
   }
-}
+};
 KeyPressListeners();
 animate();
