@@ -1,5 +1,5 @@
 import { Sprite, Boundary } from "./objects";
-import { keys } from "./control";
+import { keys } from "./control/keys";
 import { collisions } from "./data/collisions";
 import {
   offset,
@@ -8,6 +8,7 @@ import {
   PLAYER_HEIGHT,
   PLAYER_WIDTH,
 } from "./constants";
+import { rectangularCollisions } from "./control/collisions";
 
 let canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -81,12 +82,7 @@ function animate() {
   player.draw();
 
   // collision conditions
-  if (
-    player.position.x + player.width >= testBoundary.position.x &&
-    player.position.x <= testBoundary.position.x + testBoundary.width &&
-    player.position.y <= testBoundary.position.y + testBoundary.height &&
-    player.position.y + player.height >= testBoundary.position.y
-  ) {
+  if (rectangularCollisions({ rectangle1: player, rectangle2: testBoundary })) {
     console.log("colliding");
   }
 
