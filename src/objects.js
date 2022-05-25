@@ -1,21 +1,24 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 
 export class Sprite {
-  constructor({ _position, _image, _c, _frames = { max: 1 } }) {
+  constructor({ _position, _image, _c, _frames = { max: 1 }, _sprites }) {
     this.position = _position;
     this.image = _image;
     this.c = _c;
-    this.frames = _frames;
+    this.frames = { ..._frames, val: 0, elapsed: 0 };
     this.image.onload = () => {
       this.width = this.image.width / this.frames.max;
       this.height = this.image.height;
     };
+    this.moving = false;
+    this.sprites = _sprites;
+    console.log(_sprites);
   }
 
   draw() {
     this.c.drawImage(
       this.image,
-      0,
+      this.width * this.frames.val,
       0,
       this.image.width / this.frames.max,
       this.image.height,
@@ -25,6 +28,17 @@ export class Sprite {
       this.image.width / this.frames.max,
       this.image.height
     );
+
+    if (!this.moving) return;
+
+    if (this.frames.max > 1) {
+      this.frames.elapsed++;
+    }
+
+    if (this.frames.elapsed % 10 == 0) {
+      if (this.frames.val < this.frames.max - 1) this.frames.val++;
+      else this.frames.val = 0;
+    }
   }
 }
 

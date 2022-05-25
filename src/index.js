@@ -24,8 +24,17 @@ image.src = "../assets/tiled/PelletTown.png";
 const foregroundImage = new Image();
 foregroundImage.src = "../assets/tiled/Foreground.png";
 
-const playerImage = new Image();
-playerImage.src = "../assets/playerDown.png";
+const playerDownImage = new Image();
+playerDownImage.src = "../assets/playerDown.png";
+
+const playerUpImage = new Image();
+playerUpImage.src = "../assets/playerUp.png";
+
+const playerLeftImage = new Image();
+playerLeftImage.src = "../assets/playerLeft.png";
+
+const playerRightImage = new Image();
+playerRightImage.src = "../assets/playerRight.png";
 
 const collisionsMap = [];
 for (let i = 0; i < collisions.length; i += 70) {
@@ -73,9 +82,15 @@ const player = new Sprite({
     x: CANVAS_WIDTH / 2 - PLAYER_WIDTH / 2 / 4,
     y: CANVAS_HEIGHT / 2 - PLAYER_HEIGHT / 2,
   },
-  _image: playerImage,
+  _image: playerDownImage,
   _c: c,
   _frames: { max: 4 },
+  _sprites: {
+    up: playerUpImage,
+    left: playerLeftImage,
+    right: playerRightImage,
+    down: playerDownImage,
+  },
 });
 
 const testBoundary = new Boundary({
@@ -104,8 +119,12 @@ const animate = () => {
   // collision conditions
 
   let moving = true;
+  player.moving = false;
   if (keys.w.pressed && keys.lastkey === "w") {
     // background.position.y += 3;
+    player.moving = true;
+    player.image = player.sprites.up;
+
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
       if (
@@ -131,6 +150,8 @@ const animate = () => {
   }
   if (keys.a.pressed && keys.lastkey === "a") {
     // background.position.x += 3;
+    player.moving = true;
+    player.image = player.sprites.left;
 
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -157,6 +178,8 @@ const animate = () => {
   }
   if (keys.s.pressed && keys.lastkey === "s") {
     // background.position.x += 3;
+    player.moving = true;
+    player.image = player.sprites.down;
 
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -184,6 +207,8 @@ const animate = () => {
 
   if (keys.d.pressed && keys.lastkey === "d") {
     // background.position.x -= 3;
+    player.moving = true;
+    player.image = player.sprites.right;
 
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
