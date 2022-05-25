@@ -21,6 +21,9 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 const image = new Image();
 image.src = "../assets/tiled/PelletTown.png";
 
+const foregroundImage = new Image();
+foregroundImage.src = "../assets/tiled/Foreground.png";
+
 const playerImage = new Image();
 playerImage.src = "../assets/playerDown.png";
 
@@ -56,6 +59,15 @@ const background = new Sprite({
   _c: c,
 });
 
+const foreground = new Sprite({
+  _position: {
+    x: offset.x,
+    y: offset.y,
+  },
+  _image: foregroundImage,
+  _c: c,
+});
+
 const player = new Sprite({
   _position: {
     x: CANVAS_WIDTH / 2 - PLAYER_WIDTH / 2 / 4,
@@ -74,7 +86,7 @@ const testBoundary = new Boundary({
   _c: c,
 });
 
-const movables = [background, ...boundaries];
+const movables = [background, ...boundaries, foreground];
 
 const animate = () => {
   window.requestAnimationFrame(animate);
@@ -87,6 +99,7 @@ const animate = () => {
     // }
   });
   player.draw();
+  foreground.draw();
 
   // collision conditions
 
