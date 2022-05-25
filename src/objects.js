@@ -40,7 +40,7 @@ export class Boundary {
   }
 
   draw() {
-    this.c.fillStyle = "red";
+    this.c.fillStyle = "rgba(255,0,0,0)";
     this.c.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }

@@ -118,16 +118,82 @@ const animate = () => {
   }
   if (keys.a.pressed && keys.lastkey === "a") {
     // background.position.x += 3;
-    movables.forEach((movable) => (movable.position.x += 3));
+
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i];
+      if (
+        rectangularCollisions({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x + 3,
+              y: boundary.position.y,
+            },
+          },
+        })
+      ) {
+        console.log("colliding");
+        moving = false;
+        break;
+      }
+    }
+    if (moving) {
+      movables.forEach((movable) => (movable.position.x += 3));
+    }
   }
   if (keys.s.pressed && keys.lastkey === "s") {
     // background.position.x += 3;
-    movables.forEach((movable) => (movable.position.y -= 3));
+
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i];
+      if (
+        rectangularCollisions({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x,
+              y: boundary.position.y - 3,
+            },
+          },
+        })
+      ) {
+        console.log("colliding");
+        moving = false;
+        break;
+      }
+    }
+    if (moving) {
+      movables.forEach((movable) => (movable.position.y -= 3));
+    }
   }
 
   if (keys.d.pressed && keys.lastkey === "d") {
     // background.position.x -= 3;
-    movables.forEach((movable) => (movable.position.x -= 3));
+
+    for (let i = 0; i < boundaries.length; i++) {
+      const boundary = boundaries[i];
+      if (
+        rectangularCollisions({
+          rectangle1: player,
+          rectangle2: {
+            ...boundary,
+            position: {
+              x: boundary.position.x - 3,
+              y: boundary.position.y,
+            },
+          },
+        })
+      ) {
+        console.log("colliding");
+        moving = false;
+        break;
+      }
+    }
+    if (moving) {
+      movables.forEach((movable) => (movable.position.x -= 3));
+    }
   }
 };
 KeyPressListeners();
