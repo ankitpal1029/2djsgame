@@ -1,4 +1,4 @@
-export const offset = {
+export const OFFSET = {
   x: -735,
   y: -650,
 };
