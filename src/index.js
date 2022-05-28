@@ -16,7 +16,7 @@ const animate = () => {
   player.draw();
   foreground.draw();
 
-  updateLoop(player, boundaries, movables);
+  updateLoop(player, boundaries, movables, battleZones);
 };
 KeyPressListeners();
 animate();

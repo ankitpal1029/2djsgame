@@ -1,8 +1,42 @@
 import { rectangularCollisions } from "./collisions";
 import { keys } from "./keys";
-export const updateLoop = (player, boundaries, movables) => {
+
+export const updateLoop = (player, boundaries, movables, battleZones) => {
   let moving = true;
   player.moving = false;
+
+  // battle zone
+  if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
+    for (let i = 0; i < battleZones.length; i++) {
+      const battleZone = battleZones[i];
+      //   console.log(battleZone);
+      const overlappingArea =
+        (Math.min(
+          player.position.x + player.width,
+          battleZone.position.x + battleZone.width
+        ) -
+          Math.max(player.position.x, battleZone.position.x)) *
+        (Math.min(
+          player.position.y + player.height,
+          battleZone.position.y + battleZone.height
+        ) -
+          //   console.log(player.position.x, battleZone.position);
+          Math.max(player.position.y, battleZone.position.y));
+
+      if (
+        rectangularCollisions({
+          rectangle1: player,
+          rectangle2: battleZone,
+        }) &&
+        overlappingArea > (player.width * player.height) / 2
+      ) {
+        console.log("battle zone collisions");
+        break;
+      }
+    }
+  }
+
+  // collisions
   if (keys.w.pressed && keys.lastkey === "w") {
     // background.position.y += 3;
     player.moving = true;
