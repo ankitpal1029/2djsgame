@@ -10,7 +10,23 @@
     }
   </style>
   <body>
-    <canvas></canvas>
+    <div style="display: inline-block; position: relative">
+      <div
+        id="overlappingDiv"
+        style="
+          background-color: black;
+          position: absolute;
+          display: block;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          opacity: 0;
+          pointer-events: none;
+        "
+      ></div>
+      <canvas></canvas>
+    </div>
     <script src="./index.js" type="module"></script>
     <!-- <script src="./sprite.js" type="module"></script> -->
   </body>

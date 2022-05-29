@@ -11,5 +11,8 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build"
+  },
+  "dependencies": {
+    "gsap": "^3.10.4"
   }
 }

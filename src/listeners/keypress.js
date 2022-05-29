@@ -20,7 +20,6 @@ export const KeyPressListeners = () => {
         keys.lastkey = "d";
         break;
     }
-    console.log(keys);
   });
 
   window.addEventListener("keyup", (e) => {
@@ -38,6 +37,5 @@ export const KeyPressListeners = () => {
         keys.d.pressed = false;
         break;
     }
-    console.log(keys);
   });
 };

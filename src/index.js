@@ -3,11 +3,20 @@ import { background, foreground, player } from "./objects/sprites";
 import { boundaries } from "./objects/boundaries";
 import { battleZones } from "./objects/battlezones";
 import { updateLoop } from "./control/updateloop";
+import gsap from "gsap";
+
+// gsap.to("#overlappingDiv", {
+//   opacity: 1,
+//   repeat: 3,
+//   yoyo: true,
+//   duration: 0.4,
+// });
+console.log(gsap);
 
 const movables = [background, ...boundaries, foreground, ...battleZones];
 
 const animate = () => {
-  window.requestAnimationFrame(animate);
+  const animationId = window.requestAnimationFrame(animate);
   background.draw();
   battleZones.forEach((battleZone) => battleZone.draw());
   boundaries.forEach((boundary) => {
@@ -16,7 +25,8 @@ const animate = () => {
   player.draw();
   foreground.draw();
 
-  updateLoop(player, boundaries, movables, battleZones);
+  console.log(animationId);
+  updateLoop(player, boundaries, movables, battleZones, animationId);
 };
 KeyPressListeners();
 animate();

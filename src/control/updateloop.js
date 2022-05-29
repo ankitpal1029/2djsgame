@@ -1,9 +1,22 @@
 import { rectangularCollisions } from "./collisions";
 import { keys } from "./keys";
+import gsap from "gsap";
 
-export const updateLoop = (player, boundaries, movables, battleZones) => {
+const battle = {
+  initiated: false,
+};
+
+export const updateLoop = (
+  player,
+  boundaries,
+  movables,
+  battleZones,
+  animationId
+) => {
   let moving = true;
   player.moving = false;
+
+  if (battle.initiated) return;
 
   // battle zone
   if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
@@ -28,9 +41,29 @@ export const updateLoop = (player, boundaries, movables, battleZones) => {
           rectangle1: player,
           rectangle2: battleZone,
         }) &&
-        overlappingArea > (player.width * player.height) / 2
+        overlappingArea > (player.width * player.height) / 2 &&
+        battle.initiated < 0.1
       ) {
-        console.log("battle zone collisions");
+        console.log("battle activated");
+        window.cancelAnimationFrame(animationId);
+        battle.initiated = true;
+        gsap.to("#overlappingDiv", {
+          opacity: 1,
+          repeat: 3,
+          yoyo: true,
+          duration: 0.4,
+          onComplete() {
+            gsap.to("#overlappingDiv", {
+              opacity: 1,
+              duration: 0.4,
+              onComplete() {
+                animateBattle();
+              },
+            });
+            // activate new animation loop
+            // deactivate current animation loop
+          },
+        });
         break;
       }
     }
@@ -148,4 +181,9 @@ export const updateLoop = (player, boundaries, movables, battleZones) => {
       movables.forEach((movable) => (movable.position.x -= 3));
     }
   }
+};
+
+const animateBattle = () => {
+  window.requestAnimationFrame(animateBattle);
+  console.log("animate battle");
 };
